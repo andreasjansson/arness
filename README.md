@@ -6,11 +6,13 @@ Features:
 * Arness is a cloud agent that you talk to in Slack
 * Message scheduling
 * Search threads in Slack, read threads, start new threads agentically (like subagents)
-* Databases -- memory is a database, but you can agentically add arbitrary databases. Databases replace skills
+* Databases: Memory is a database, but you can agentically add arbitrary databases. Databases replace skills
 * RBAC enforced at the framework level
 * Tools are called in [code mode](https://blog.cloudflare.com/code-mode/)
 * All tools (except `container-shell`) are dynamic workers, no secrets are exposed to the agent
 * Code lives in [Artifacts](https://developers.cloudflare.com/artifacts/), synced across dynamic workers and sandbox
+
+![Arnes Kladdkaka](assets/arnes-kladdkaka.png)
 
 ## Code mode bindings
 
