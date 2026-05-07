@@ -270,7 +270,22 @@ Initial roles:
 * `admin` -- Can grant and revoke roles, manage policies, and use every binding.
 * `user` -- Can use normal agent capabilities such as `File`, `Web`, `Publish`, `Image`, `PDF`, and `DB` according to the deployment policy. By default, `user` can select and insert on the `memory` table, but not on RBAC tables.
 * `github` -- Can use the `Github` binding.
+* `scheduler` -- Can schedule, list, edit, and delete future posts through the `Scheduler` binding.
 * `container` -- Can use the `Container` binding.
+
+## Scheduled posts
+
+The `Scheduler` binding lets agents schedule prompts to be posted later on behalf of the current user. When a schedule fires, the message is delivered as a normal user message attributed to the user who created the schedule, so normal routing, permissions, and user-scoped credentials apply.
+
+Schedules can be one-shot ISO datetimes, ISO 8601 intervals, or 5-field cron expressions in UTC:
+* `{ kind: "once", value: "2026-05-01T09:00:00Z" }`
+* `{ kind: "interval", value: "P1D" }`
+* `{ kind: "cron", value: "0 9 * * *" }`
+
+The `thread` field controls where fires are posted:
+* Omit `thread` or set it to `null` to create a new top-level thread for each fire.
+* Set `thread` to `"current"` to append to the current thread.
+* Set `thread` to a stable custom string, such as `"daily-standup"`, to post all fires to a named persistent thread.
 
 ## Architecture
 
