@@ -361,31 +361,20 @@ arness cli
 arness.yaml:
 
 ```yaml
-system_prompt: |
-  You are Arne, a coding agent running in Cloudflare Workers.
-
-  Be precise, don't repeat yourself.
-
-  You have one tool: code-mode
-
-  # Available bindings:
-  {{ bindings }}
-
-  # Memory
-  {{ db_select("SELECT title FROM memory") }}
-
-  # User
-  User ID: {{ user_id }}
-  Username: {{ username }}
-
-  # Today's date
-  {{ date }}
+system_prompt_path: system_prompt.txt
 
 admins:
   - slack:<slack-user-id>
 
 account-id: ${CF_ACCOUNT_ID}
-name: arness
+name: arness  # optional; defaults to arness and is used for the Worker name
+
+worker:
+  name: arness  # optional; defaults to name above
+
+durable-objects:
+  agent-name: arness  # optional; defaults to name above
+  scheduler-name: arness-scheduler  # optional; defaults to <name>-scheduler
 
 access:
   team-domain: ${CF_ACCESS_TEAM_DOMAIN}
@@ -421,7 +410,7 @@ Env vars can be read from the environment at `arness deploy`-time, or from `.env
 Default system_prompt.md:
 
 ```
-You are Arne, a coding agent running in Cloudflare Workers.
+You are @{{ name }}, a coding agent running in Cloudflare Workers.
 
 Be precise, don't repeat yourself.
 
