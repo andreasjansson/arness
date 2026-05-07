@@ -18,6 +18,8 @@ Features:
 
 Arness exposes capabilities to agents as Code Mode bindings: typed TypeScript classes that the model can call from generated JavaScript. Instead of loading one JSON schema per operation into context, Code Mode gives the model a compact typed API surface and runs the generated code in an isolated Dynamic Worker sandbox.
 
+### `File`
+
 ```ts
 declare const File: {
   read(path: string, options?: { startLine?: number; endLine?: number }): Promise<string>;
@@ -57,7 +59,11 @@ declare const File: {
    */
   delete(path: string, commitMessage: string): Promise<void>;
 };
+```
 
+### `Web`
+
+```ts
 declare const Web: {
   /**
    * Search the web using Exa.
@@ -71,28 +77,44 @@ declare const Web: {
 
   request(url: string, init?: RequestInit): Promise<Response>;
 };
+```
 
+### `Publish`
+
+```ts
 declare const Publish: {
   /**
    * Publish an Artifact-backed file to a stable URL. Markdown files are rendered as HTML.
    */
   file(path: string): Promise<{ url: string }>;
 };
+```
 
+### `Image`
+
+```ts
 declare const Image: {
   /**
    * Read an image file from Artifacts and return it as model-visible image content.
    */
   read(path: string): Promise<ImageContent>;
 };
+```
 
+### `PDF`
+
+```ts
 declare const PDF: {
   /**
    * Read a PDF file from Artifacts and return it as model-visible document content.
    */
   read(path: string): Promise<PdfContent>;
 };
+```
 
+### `DB`
+
+```ts
 declare const DB: {
   /**
    * Run SQL against the thread's D1 database.
@@ -101,7 +123,11 @@ declare const DB: {
   insert(table: string, row: Record<string, unknown>): Promise<void>;
   createTable(sql: string): Promise<void>;
 };
+```
 
+### `RBAC`
+
+```ts
 declare const RBAC: {
   /**
    * Grant a role to a user. Only admins can modify role assignments.
@@ -133,7 +159,11 @@ declare const RBAC: {
    */
   listPolicies(role?: string): Promise<RbacPolicy[]>;
 };
+```
 
+### `Github`
+
+```ts
 declare const Github: {
   /**
    * Clone a GitHub repository into Artifacts, scoped to the current thread.
@@ -150,7 +180,11 @@ declare const Github: {
   pulls: GithubPullRequests;
   workflows: GithubWorkflows;
 };
+```
 
+### `Chat`
+
+```ts
 declare const Chat: {
   /**
    * Start a new top-level thread immediately by posting a message on behalf of the current user.
@@ -178,7 +212,11 @@ declare const Chat: {
     cursor?: string;
   }): Promise<ChatSearchResultPage>;
 };
+```
 
+### `Scheduler`
+
+```ts
 declare const Scheduler: {
   /**
    * Schedule a message to be posted in the future on behalf of the current user.
@@ -211,7 +249,11 @@ declare const Scheduler: {
    */
   delete(id: string): Promise<void>;
 };
+```
 
+### `Container`
+
+```ts
 declare const Container: {
   /**
    * Run a shell command in the thread's sandbox container.
@@ -342,6 +384,12 @@ Arness is designed to be easily extensible. Extensions may include
 * Database tables
 
 ## CLI
+
+### Initialize with default config and system prompt
+
+```
+arness init
+```
 
 ### Deploy
 
