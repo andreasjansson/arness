@@ -435,4 +435,21 @@ You have one tool: code-mode
 
 ### Template variables and functions
 
-TODO
+The `system_prompt` value is rendered as a template at the start of each agent invocation. Templates can reference deployment metadata, request context, Code Mode bindings, and database queries.
+
+Variables:
+* `{{ date }}` -- Current date in ISO format.
+* `{{ datetime }}` -- Current timestamp in ISO format.
+* `{{ bindings }}` -- TypeScript declarations for the Code Mode bindings available to the current user after RBAC filtering.
+* `{{ user }}` -- Principal identifier for the current user, formatted as `<provider>:<provider-user-id>`.
+* `{{ space }}` -- Current chat space identifier.
+* `{{ thread }}` -- Current thread identifier.
+* `{{ agent }}` -- Agent name from `arness.yaml`.
+
+Functions:
+* `{{ db_select("SELECT ...") }}` -- Run a read-only SQL query against D1 and render the returned rows. RBAC is enforced the same way as for `DB.select` calls from Code Mode.
+* `{{ env("NAME") }}` -- Read a deployment-time environment variable. Missing variables fail rendering.
+* `{{ json(value) }}` -- Render a value as JSON.
+* `{{ markdown(value) }}` -- Render arrays or objects as a compact Markdown list/table.
+
+Template rendering fails closed: unknown variables, missing env vars, SQL errors, and RBAC-denied template function calls abort the invocation instead of producing a partial prompt.
