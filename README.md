@@ -205,13 +205,18 @@ The `rbac_policies` table maps roles to allowed binding calls:
 
 ## Role-based access control
 
-RBAC is enforced on every Code Mode binding call. Each binding method checks the calling user's roles before executing.
+RBAC is enforced on every Code Mode binding call. Each binding method checks the calling user's roles and the role-to-call policies before executing.
 
-Bootstrap admins are configured in `arness.yaml`, and admins can assign or revoke roles for other users through the `RBAC` binding. The `admin` role can also be granted through `RBAC.grant`, so additional admins are stored in the `rbac` table after bootstrap.
+Bootstrap admins are configured in `arness.yaml`, and admins can assign or revoke roles for other users through the `RBAC` binding. The `admin` role can also be granted through `RBAC.grant`, so additional admins are stored in `rbac_assignments` after bootstrap.
+
+Policies can target three levels:
+* Entire binding classes, such as allowing `Github` for the `github` role.
+* Specific methods, such as allowing `DB.select` for the `user` role.
+* Specific method inputs, such as allowing `DB.select` and `DB.insert` for the `user` role only when the target table is `memory`.
 
 Initial roles:
-* `admin` -- Can grant and revoke roles, and can use every binding.
-* `user` -- Can use normal agent capabilities such as `File`, `Web`, `Publish`, `Image`, `PDF`, and `DB` according to the deployment policy.
+* `admin` -- Can grant and revoke roles, manage policies, and use every binding.
+* `user` -- Can use normal agent capabilities such as `File`, `Web`, `Publish`, `Image`, `PDF`, and `DB` according to the deployment policy. By default, `user` can select and insert on the `memory` table, but not on RBAC tables.
 * `github` -- Can use the `Github` binding.
 * `container` -- Can use the `Container` binding.
 
