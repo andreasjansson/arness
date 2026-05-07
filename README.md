@@ -314,7 +314,7 @@ The `Chat` binding lets agents interact with the chat provider directly through 
 
 ## Scheduled posts
 
-The `Scheduler` binding lets agents schedule prompts to be posted later on behalf of the current user. When a schedule fires, the message is delivered as a normal user message attributed to the user who created the schedule, so normal routing, permissions, and user-scoped credentials apply.
+The `Scheduler` binding lets agents schedule prompts to be posted later on behalf of the current user. When a schedule fires, the message is delivered as a normal user message attributed to the user who created the schedule, so normal routing, permissions, and user-scoped credentials apply. Use `Chat.startThread` for the same behavior immediately instead of in the future.
 
 Schedules can be one-shot ISO datetimes, ISO 8601 intervals, or 5-field cron expressions in UTC:
 * `{ kind: "once", value: "2026-05-01T09:00:00Z" }`
