@@ -441,7 +441,7 @@ Variables:
 * `{{ username }}` -- Human-readable display name for the current user.
 * `{{ space }}` -- Current chat space identifier.
 * `{{ thread }}` -- Current thread identifier.
-* `{{ agent }}` -- Agent name from `arness.yaml`.
+* `{{ agent_name }}` -- Agent name from `arness.yaml`.
 
 Functions:
 * `{{ db_select("SELECT ...") }}` -- Run a read-only SQL query against D1 and render the returned rows. RBAC is enforced the same way as for `DB.select` calls from Code Mode.
