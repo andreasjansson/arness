@@ -374,6 +374,10 @@ system_prompt: |
   # Memory
   {{ db_select("SELECT title FROM memory") }}
 
+  # User
+  User ID: {{ user_id }}
+  Username: {{ username }}
+
   # Today's date
   {{ date }}
 
@@ -439,7 +443,6 @@ The `system_prompt` value is rendered as a template at the start of each agent i
 
 Variables:
 * `{{ date }}` -- Current date in ISO format.
-* `{{ datetime }}` -- Current timestamp in ISO format.
 * `{{ bindings }}` -- TypeScript declarations for the Code Mode bindings available to the current user after RBAC filtering.
 * `{{ user }}` -- Principal identifier for the current user, formatted as `<provider>:<provider-user-id>`.
 * `{{ space }}` -- Current chat space identifier.
