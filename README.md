@@ -410,7 +410,7 @@ Env vars can be read from the environment at `arness deploy`-time, or from `.env
 Default system_prompt.md:
 
 ```
-You are @{{ name }}, a coding agent running in Cloudflare Workers.
+You are @{{ agent_name }}, a coding agent running in Cloudflare Workers.
 
 Be precise, don't repeat yourself.
 
