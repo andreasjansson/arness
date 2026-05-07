@@ -196,8 +196,8 @@ name: arness
 admins:
   - slack:<slack-user-id>
 
-web-server:
-  access-app-id: <cloudflare-access-app-id>  # optional
+access:
+  app-id: <cloudflare-access-app-id>  # optional
 
 ai-gateway:
   model: <llm-model>
@@ -205,10 +205,10 @@ ai-gateway:
   gateway-id: ${CF_AIG_GATEWAY_ID}
 
 artifacts:
-  namespace: arness
+  namespace: arness  # optional
 
 d1:
-  database-name: arness
+  database-name: arness  # optional
   database-id: ${CF_D1_DATABASE_ID}
 
 github:
