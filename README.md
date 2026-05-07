@@ -139,6 +139,39 @@ declare const Github: {
   workflows: GithubWorkflows;
 };
 
+declare const Chat: {
+  /**
+   * Start a new top-level thread immediately by posting a message on behalf of the current user.
+   * This is the immediate version of Scheduler.schedule: the message is delivered now and starts
+   * an independent agent invocation in the target space.
+   */
+  startThread(input: {
+    message: string;
+    space?: string;
+  }): Promise<ChatThread>;
+
+  /**
+   * List recent threads in a chat space using the underlying Slack, Discord, or Google Chat API.
+   * When space is omitted, lists threads in the current space.
+   */
+  listThreads(input?: {
+    space?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<ChatThreadPage>;
+
+  /**
+   * Search messages and threads in a chat space using the underlying Slack, Discord, or Google Chat API.
+   * When space is omitted, searches the current space.
+   */
+  search(input: {
+    query: string;
+    space?: string;
+    limit?: number;
+    cursor?: string;
+  }): Promise<ChatSearchResultPage>;
+};
+
 declare const Scheduler: {
   /**
    * Schedule a message to be posted in the future on behalf of the current user.
