@@ -301,11 +301,11 @@ Initial roles:
 
 ## Threads and spaces
 
-The `Chat` binding lets agents interact with the chat provider directly through a provider-neutral API backed by Slack, Discord, or Google Chat.
+The `Chat` binding lets agents interact with the current chat space through a provider-neutral API backed by Slack, Discord, or Google Chat.
 
-`Chat.startThread` posts a message immediately as the current user in a new top-level thread. This is the immediate equivalent of `Scheduler.schedule`: it starts an independent agent invocation now instead of at a future time, which makes it useful for subagent-style delegation.
+`Chat.startThread` posts a message immediately as the current user in a new top-level thread in the current space. This is the immediate equivalent of `Scheduler.schedule`: it starts an independent agent invocation now instead of at a future time, which makes it useful for subagent-style delegation.
 
-`Chat.listThreads` lists recent threads in the current or specified space. `Chat.search` searches messages and threads in the current or specified space. Both operations use the underlying provider API, so provider-specific indexing and retention rules apply.
+`Chat.listThreads` lists recent threads in the current space. `Chat.search` searches messages and threads in the current space. Both operations use the underlying provider API, so provider-specific indexing and retention rules apply.
 
 ## Scheduled posts
 
