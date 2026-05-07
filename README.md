@@ -448,7 +448,8 @@ The `system_prompt` value is rendered as a template at the start of each agent i
 Variables:
 * `{{ date }}` -- Current date in ISO format.
 * `{{ bindings }}` -- TypeScript declarations for the Code Mode bindings available to the current user after RBAC filtering.
-* `{{ user }}` -- Principal identifier for the current user, formatted as `<provider>:<provider-user-id>`.
+* `{{ user_id }}` -- Provider-scoped stable user identifier, formatted as `<provider>:<provider-user-id>`.
+* `{{ username }}` -- Human-readable display name for the current user.
 * `{{ space }}` -- Current chat space identifier.
 * `{{ thread }}` -- Current thread identifier.
 * `{{ agent }}` -- Agent name from `arness.yaml`.
