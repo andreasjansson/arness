@@ -433,6 +433,10 @@ You have one tool: code-mode
 # Memory
 {{ db_select("SELECT title FROM memory") }}
 
+# User
+User ID: {{ user_id }}
+Username: {{ username }}
+
 # Today's date
 {{ date }}
 ```
