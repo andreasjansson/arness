@@ -6,7 +6,7 @@ Features:
 * Arness is a cloud agent that you talk to in Slack
 * Message scheduling
 * Search threads in Slack, read threads, start new threads agentically (like subagents)
-* Databases -- memory is a database, but you can agentically add arbitrary databases
+* Databases -- memory is a database, but you can agentically add arbitrary databases. Databases replace skills
 * RBAC enforced at the framework level
 * Tools are called in [code mode](https://blog.cloudflare.com/code-mode/)
 * All tools (except `container-shell`) are dynamic workers, no secrets are exposed to the agent
@@ -362,9 +362,20 @@ arness.yaml:
 
 ```yaml
 system_prompt: |
-  You are Arness, a coding agent running in Cloudflare Workers.
-  Use Code Mode bindings to inspect, modify, and test code.
-  Be concise, accurate, and explicit about changes you make.
+  You are Arne, a coding agent running in Cloudflare Workers.
+
+  Be precise, don't repeat yourself.
+
+  You have one tool: code-mode
+
+  # Available bindings:
+  {{ bindings }}
+
+  # Memory
+  {{ db_select("SELECT title FROM memory") }}
+
+  # Today's date
+  {{ date }}
 
 admins:
   - slack:<slack-user-id>
@@ -401,3 +412,27 @@ slack:
 
 Env vars can be read from the environment at `arness deploy`-time, or from `.env`.
 
+## System prompt
+
+Default system_prompt.md:
+
+```
+You are Arne, a coding agent running in Cloudflare Workers.
+
+Be precise, don't repeat yourself.
+
+You have one tool: code-mode
+
+# Available bindings:
+{{ bindings }}
+
+# Memory
+{{ db_select("SELECT title FROM memory") }}
+
+# Today's date
+{{ date }}
+```
+
+### Template variables and functions
+
+TODO
