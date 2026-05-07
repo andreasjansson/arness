@@ -251,7 +251,6 @@ The `scheduled_posts` table stores future posts:
 * `last_status` -- Result of the most recent fire, if any
 * `enabled` -- Whether the schedule is active
 * `created_by` -- Principal identifier for the user who scheduled the post
-* `description` -- Optional human-readable label
 
 ## Role-based access control
 
