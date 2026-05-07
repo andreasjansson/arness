@@ -188,6 +188,7 @@ Initial roles:
 * `user` -- Can use normal agent capabilities such as `File`, `Web`, `Publish`, `Image`, `PDF`, and `DB` according to the deployment policy.
 * `github` -- Can use the `Github` binding.
 * `container` -- Can use the `Container` binding.
+
 ## Architecture
 
 Arness is designed to be easily extensible. Extensions may include
