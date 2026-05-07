@@ -102,9 +102,24 @@ declare const RBAC: {
   revoke(user: string, role: string): Promise<void>;
 
   /**
-   * List role assignments. When user is omitted, returns all assignments visible to the caller.
+   * List user-to-role assignments. When user is omitted, returns all assignments visible to the caller.
    */
-  list(user?: string): Promise<RbacAssignment[]>;
+  listAssignments(user?: string): Promise<RbacAssignment[]>;
+
+  /**
+   * Allow a role to call a binding class, method, or method with constrained inputs.
+   */
+  allow(policy: RbacPolicyInput): Promise<void>;
+
+  /**
+   * Deny a role from calling a binding class, method, or method with constrained inputs.
+   */
+  deny(policy: RbacPolicyInput): Promise<void>;
+
+  /**
+   * List role-to-call policies. When role is omitted, returns all policies visible to the caller.
+   */
+  listPolicies(role?: string): Promise<RbacPolicy[]>;
 };
 
 declare const Github: {
