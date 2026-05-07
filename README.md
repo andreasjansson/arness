@@ -2,37 +2,81 @@
 
 Arness is Andreas Jansson's minimal agent harness built on the Cloudflare Agents SDK. It is named after Andreas' favorite ice cream.
 
-## Tools
+## Code mode bindings
 
-TODO: Rewrite as ts types that code-mode can use
+Arness exposes capabilities to agents as Code Mode bindings: typed TypeScript classes that the model can call from generated JavaScript. Instead of loading one JSON schema per operation into context, Code Mode gives the model a compact typed API surface and runs the generated code in an isolated Dynamic Worker sandbox.
 
-* `read-file` (read full file or specific lines)
-* `write-new-file` (throws error if file exists, avoids the footgun of accidentally overwriting a file)
-* `replace-file` (throws error if file doesn't exist)
-* `edit-file` (token-efficient editing using either originalContent or startContent/endContent)
-* `find-file` (like the command line find command)
-* `grep` (efficient grep in the artifacts repos stored in memfs)
-* `rename-file`
-* `delete-file`
-* `web-search` (using exa)
-* `web-fetch` (has option to automatically convert to markdown)
-* `publish-file` (expose a file to a stable URL on a web server, the web server automatically renders markdown as html)
-* `read-image` (reads an image into the context)
-* `read-pdf` (reads a PDF into the context)
-* `db-select` (run sql against a D1 database, databases are shared across threads)
-* `db-insert`
-* `db-create-table`
-* `github` (pull and push repos; search; list, open, close issues; list, open, close PRs; list, read, log workflows; etc. -- basically everything that the gh-cli can do. pulling a repo creates a copy in Artifacts that's scoped to the thread)
-* `code-mode` (spawn dynamic worker and execute javascript)
-* `container-shell` (run command in sandbox container, containers are scoped to the thread)
+```ts
+declare const File: {
+  read(path: string, options?: { startLine?: number; endLine?: number }): Promise<string>;
+  writeNew(path: string, contents: string, commitMessage: string): Promise<void>;
+  replace(path: string, contents: string, commitMessage: string): Promise<void>;
+  edit(
+    path: string,
+    edit:
+      | { originalContent: string; newContent: string }
+      | { startContent: string; endContent: string; newContent: string },
+    commitMessage: string,
+  ): Promise<void>;
+  find(pattern: string, options?: { cwd?: string }): Promise<string[]>;
+  grep(pattern: string, options?: { cwd?: string; include?: string; exclude?: string }): Promise<string>;
+  rename(oldPath: string, newPath: string, commitMessage: string): Promise<void>;
+  delete(path: string, commitMessage: string): Promise<void>;
+};
 
-`code-mode` has bindings to the following classes:
-* `File` (used by `read-file`, `edit-file`, `find-file`, `grep`, etc.)
-* `Web` (used by `web-search`, `web-fetch`, also has methods to do arbitrary HTTP calls)
-* `Publish` (used by `publish-file`)
-* `DB` (used by `db-select`, etc.)
-* `Container` (used by `container-shell`)
-* `Github` (used by `github`)
+declare const Web: {
+  search(query: string, options?: { limit?: number }): Promise<WebSearchResult[]>;
+  fetch(url: string, options?: { markdown?: boolean }): Promise<string>;
+  request(url: string, init?: RequestInit): Promise<Response>;
+};
+
+declare const Publish: {
+  file(path: string): Promise<{ url: string }>;
+};
+
+declare const Image: {
+  read(path: string): Promise<ImageContent>;
+};
+
+declare const PDF: {
+  read(path: string): Promise<PdfContent>;
+};
+
+declare const DB: {
+  select<T = unknown>(sql: string, params?: unknown[]): Promise<T[]>;
+  insert(table: string, row: Record<string, unknown>): Promise<void>;
+  createTable(sql: string): Promise<void>;
+};
+
+declare const Github: {
+  pull(repo: string): Promise<{ path: string }>;
+  push(path: string): Promise<void>;
+  search(query: string): Promise<GithubSearchResult[]>;
+  issues: GithubIssues;
+  pulls: GithubPullRequests;
+  workflows: GithubWorkflows;
+};
+
+declare const Container: {
+  shell(command: string, options?: { cwd?: string; timeoutSeconds?: number }): Promise<ShellResult>;
+};
+
+declare const Code: {
+  run<T = unknown>(code: string): Promise<T>;
+};
+```
+
+These bindings back the user-facing tools:
+
+* `File`: `read-file`, `write-new-file`, `replace-file`, `edit-file`, `find-file`, `grep`, `rename-file`, `delete-file`
+* `Web`: `web-search`, `web-fetch`, and arbitrary HTTP requests
+* `Publish`: `publish-file`
+* `Image`: `read-image`
+* `PDF`: `read-pdf`
+* `DB`: `db-select`, `db-insert`, `db-create-table`
+* `Github`: GitHub repo, search, issue, PR, and workflow operations
+* `Container`: `container-shell`
+* `Code`: `code-mode`
 
 ## Integrations
 
