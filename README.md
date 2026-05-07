@@ -197,7 +197,8 @@ admins:
   - slack:<slack-user-id>
 
 access:
-  app-id: <cloudflare-access-app-id>  # optional
+  team-domain: ${CF_ACCESS_TEAM_DOMAIN}
+  audience: ${CF_ACCESS_AUDIENCE}  # Access Application Audience / AUD tag
 
 ai-gateway:
   model: <llm-model>
