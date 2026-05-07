@@ -149,7 +149,6 @@ declare const Scheduler: {
     message: string;
     schedule: { kind: "once" | "interval" | "cron"; value: string };
     thread?: "current" | string | null;
-    description?: string;
   }): Promise<ScheduledPost>;
 
   /**
@@ -164,7 +163,6 @@ declare const Scheduler: {
     message?: string;
     schedule?: { kind: "once" | "interval" | "cron"; value: string };
     thread?: "current" | string | null;
-    description?: string | null;
     enabled?: boolean;
   }): Promise<ScheduledPost>;
 
