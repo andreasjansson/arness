@@ -90,6 +90,23 @@ declare const DB: {
   createTable(sql: string): Promise<void>;
 };
 
+declare const RBAC: {
+  /**
+   * Grant a role to a user. Only admins can modify role assignments.
+   */
+  grant(user: string, role: string): Promise<void>;
+
+  /**
+   * Revoke a role from a user. Only admins can modify role assignments.
+   */
+  revoke(user: string, role: string): Promise<void>;
+
+  /**
+   * List role assignments. When user is omitted, returns all assignments visible to the caller.
+   */
+  list(user?: string): Promise<RbacAssignment[]>;
+};
+
 declare const Github: {
   /**
    * Clone a GitHub repository into Artifacts, scoped to the current thread.
@@ -221,19 +238,7 @@ slack:
   bot-token: ${SLACK_BOT_TOKEN}
   signing-secret: ${SLACK_SIGNING_SECRET}
   app-token: ${SLACK_APP_TOKEN}  # optional; only needed for Socket Mode/local development
-
-discord:
-  application-id: ${DISCORD_APPLICATION_ID}
-  public-key: ${DISCORD_PUBLIC_KEY}
-  bot-token: ${DISCORD_BOT_TOKEN}
-  enabled: false
-
-google-chat:
-  project-id: ${GOOGLE_CHAT_PROJECT_ID}
-  credentials-json: ${GOOGLE_APPLICATION_CREDENTIALS_JSON}
-  enabled: false
 ```
 
 Env vars can be read from the environment at `arness deploy`-time, or from `.env`.
 
-GitHub OAuth uses `oauth-client-id` and `oauth-client-secret` because GitHub OAuth Apps expose those values as Client ID and Client secret. The callback path is configured separately so deployments can derive the full callback URL from the web server origin.
