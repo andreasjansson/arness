@@ -1,6 +1,16 @@
 # Arness
 
-Arness is Andreas Jansson's agent harness built on the Cloudflare Agents SDK. It is named after Andreas' favorite ice cream.
+Arness is Andreas Jansson's coding agent harness built on the Cloudflare Agents SDK. It is named after Andreas' favorite ice cream.
+
+Features:
+* Arness is a cloud agent that you talk to in Slack
+* Message scheduling
+* Search threads in Slack, read threads, start new threads agentically (like subagents)
+* Databases -- memory is a database, but you can agentically add arbitrary databases
+* RBAC enforced at the framework level
+* Tools are called in [code mode](https://blog.cloudflare.com/code-mode/)
+* All tools (except `container-shell`) are dynamic workers, no secrets are exposed to the agent
+* Code lives in [Artifacts](https://developers.cloudflare.com/artifacts/), synced across dynamic workers and sandbox
 
 ## Code mode bindings
 
@@ -351,11 +361,16 @@ arness cli
 arness.yaml:
 
 ```yaml
-account-id: ${CF_ACCOUNT_ID}
-name: arness
+system_prompt: |
+  You are Arness, a coding agent running in Cloudflare Workers.
+  Use Code Mode bindings to inspect, modify, and test code.
+  Be concise, accurate, and explicit about changes you make.
 
 admins:
   - slack:<slack-user-id>
+
+account-id: ${CF_ACCOUNT_ID}
+name: arness
 
 access:
   team-domain: ${CF_ACCESS_TEAM_DOMAIN}
