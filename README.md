@@ -139,6 +139,41 @@ declare const Github: {
   workflows: GithubWorkflows;
 };
 
+declare const Scheduler: {
+  /**
+   * Schedule a message to be posted in the future on behalf of the current user.
+   * Omit thread for a new top-level thread each time, use "current" for the current thread,
+   * or pass a stable custom string to post to a named persistent thread.
+   */
+  schedule(input: {
+    message: string;
+    schedule: { kind: "once" | "interval" | "cron"; value: string };
+    thread?: "current" | string | null;
+    description?: string;
+  }): Promise<ScheduledPost>;
+
+  /**
+   * List scheduled posts for the current agent.
+   */
+  list(): Promise<ScheduledPost[]>;
+
+  /**
+   * Edit an existing scheduled post. Omitted fields are left unchanged.
+   */
+  edit(id: string, patch: {
+    message?: string;
+    schedule?: { kind: "once" | "interval" | "cron"; value: string };
+    thread?: "current" | string | null;
+    description?: string | null;
+    enabled?: boolean;
+  }): Promise<ScheduledPost>;
+
+  /**
+   * Delete a scheduled post by id.
+   */
+  delete(id: string): Promise<void>;
+};
+
 declare const Container: {
   /**
    * Run a shell command in the thread's sandbox container.
