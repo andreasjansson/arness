@@ -300,8 +300,17 @@ Initial roles:
 * `admin` -- Can grant and revoke roles, manage policies, and use every binding.
 * `user` -- Can use normal agent capabilities such as `File`, `Web`, `Publish`, `Image`, `PDF`, and `DB` according to the deployment policy. By default, `user` can select and insert on the `memory` table, but not on RBAC tables.
 * `github` -- Can use the `Github` binding.
+* `chat` -- Can start new threads, list threads, and search spaces through the `Chat` binding.
 * `scheduler` -- Can schedule, list, edit, and delete future posts through the `Scheduler` binding.
 * `container` -- Can use the `Container` binding.
+
+## Threads and spaces
+
+The `Chat` binding lets agents interact with the chat provider directly through a provider-neutral API backed by Slack, Discord, or Google Chat.
+
+`Chat.startThread` posts a message immediately as the current user in a new top-level thread. This is the immediate equivalent of `Scheduler.schedule`: it starts an independent agent invocation now instead of at a future time, which makes it useful for subagent-style delegation.
+
+`Chat.listThreads` lists recent threads in the current or specified space. `Chat.search` searches messages and threads in the current or specified space. Both operations use the underlying provider API, so provider-specific indexing and retention rules apply.
 
 ## Scheduled posts
 
