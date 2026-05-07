@@ -9,8 +9,21 @@ Arness exposes capabilities to agents as Code Mode bindings: typed TypeScript cl
 ```ts
 declare const File: {
   read(path: string, options?: { startLine?: number; endLine?: number }): Promise<string>;
+
+  /**
+   * Create a new file in Artifacts. Throws if the file already exists.
+   */
   writeNew(path: string, contents: string, commitMessage: string): Promise<void>;
+
+  /**
+   * Replace an existing file in Artifacts. Throws if the file does not exist.
+   */
   replace(path: string, contents: string, commitMessage: string): Promise<void>;
+
+  /**
+   * Edit a file by replacing either an exact content block or the range from startContent to endContent.
+   * File mutations are committed to Artifacts using commitMessage.
+   */
   edit(
     path: string,
     edit:
@@ -18,39 +31,76 @@ declare const File: {
       | { startContent: string; endContent: string; newContent: string },
     commitMessage: string,
   ): Promise<void>;
+
   find(pattern: string, options?: { cwd?: string }): Promise<string[]>;
   grep(pattern: string, options?: { cwd?: string; include?: string; exclude?: string }): Promise<string>;
+
+  /**
+   * Rename or move a file in Artifacts and commit the change.
+   */
   rename(oldPath: string, newPath: string, commitMessage: string): Promise<void>;
+
+  /**
+   * Delete a file from Artifacts and commit the change.
+   */
   delete(path: string, commitMessage: string): Promise<void>;
 };
 
 declare const Web: {
+  /**
+   * Search the web using Exa.
+   */
   search(query: string, options?: { limit?: number }): Promise<WebSearchResult[]>;
+
+  /**
+   * Fetch a URL. When markdown is true, HTML is converted to markdown before being returned.
+   */
   fetch(url: string, options?: { markdown?: boolean }): Promise<string>;
+
   request(url: string, init?: RequestInit): Promise<Response>;
 };
 
 declare const Publish: {
+  /**
+   * Publish an Artifact-backed file to a stable URL. Markdown files are rendered as HTML.
+   */
   file(path: string): Promise<{ url: string }>;
 };
 
 declare const Image: {
+  /**
+   * Read an image file from Artifacts and return it as model-visible image content.
+   */
   read(path: string): Promise<ImageContent>;
 };
 
 declare const PDF: {
+  /**
+   * Read a PDF file from Artifacts and return it as model-visible document content.
+   */
   read(path: string): Promise<PdfContent>;
 };
 
 declare const DB: {
+  /**
+   * Run SQL against the thread's D1 database.
+   */
   select<T = unknown>(sql: string, params?: unknown[]): Promise<T[]>;
   insert(table: string, row: Record<string, unknown>): Promise<void>;
   createTable(sql: string): Promise<void>;
 };
 
 declare const Github: {
+  /**
+   * Clone a GitHub repository into Artifacts, scoped to the current thread.
+   */
   pull(repo: string): Promise<{ path: string }>;
+
+  /**
+   * Push an Artifact-backed repository checkout back to GitHub.
+   */
   push(path: string): Promise<void>;
+
   search(query: string): Promise<GithubSearchResult[]>;
   issues: GithubIssues;
   pulls: GithubPullRequests;
@@ -58,25 +108,20 @@ declare const Github: {
 };
 
 declare const Container: {
+  /**
+   * Run a shell command in the thread's sandbox container.
+   * Artifact repos are pulled into the container before every command; conflicts are reported on stderr.
+   */
   shell(command: string, options?: { cwd?: string; timeoutSeconds?: number }): Promise<ShellResult>;
 };
 
 declare const Code: {
+  /**
+   * Execute JavaScript in an isolated Dynamic Worker with these bindings available.
+   */
   run<T = unknown>(code: string): Promise<T>;
 };
 ```
-
-These bindings back the user-facing tools:
-
-* `File`: `read-file`, `write-new-file`, `replace-file`, `edit-file`, `find-file`, `grep`, `rename-file`, `delete-file`
-* `Web`: `web-search`, `web-fetch`, and arbitrary HTTP requests
-* `Publish`: `publish-file`
-* `Image`: `read-image`
-* `PDF`: `read-pdf`
-* `DB`: `db-select`, `db-insert`, `db-create-table`
-* `Github`: GitHub repo, search, issue, PR, and workflow operations
-* `Container`: `container-shell`
-* `Code`: `code-mode`
 
 ## Integrations
 
@@ -107,7 +152,8 @@ By default, Arness provides the following tables:
 * `memory`
 * `rbac`
 
-The `memory` table has 
+The `memory` table has the following fields:
+* 
 
 ## Role-based access control
 
