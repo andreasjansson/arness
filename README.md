@@ -179,9 +179,9 @@ The `rbac` table has the following fields:
 
 ## Role-based access control
 
-RBAC is enforced on every Code Mode binding call, not just at conversation start. Each binding method checks the calling user's roles before executing so generated code cannot bypass authorization by calling lower-level capabilities directly.
+RBAC is enforced on every Code Mode binding call. Each binding method checks the calling user's roles before executing.
 
-Admins are configured in `arness.yaml` and are allowed to assign or revoke roles for other users through the `RBAC` binding. Admin status is not stored in the `rbac` table; the config is the source of truth for bootstrap access.
+Bootstrap admins are configured in `arness.yaml`, and admins can assign or revoke roles for other users through the `RBAC` binding. The `admin` role can also be granted through `RBAC.grant`, so additional admins are stored in the `rbac` table after bootstrap.
 
 Initial roles:
 * `admin` -- Can grant and revoke roles, and can use every binding.
