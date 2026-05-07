@@ -1,6 +1,6 @@
 # Arness
 
-Arness is Andreas Jansson's minimal agent harness built on the Cloudflare Agents SDK. It is named after Andreas' favorite ice cream.
+Arness is Andreas Jansson's agent harness built on the Cloudflare Agents SDK. It is named after Andreas' favorite ice cream.
 
 ## Code mode bindings
 
@@ -119,8 +119,8 @@ declare const Container: {
 ## Integrations
 
 * Slack
-* Discord
-
+* Discord (will be implemented later)
+* Google Chat (will be implemented later)
 
 
 ## Tool environments and persistence
@@ -167,3 +167,72 @@ Arness is designed to be easily extensible. Extensions may include
 * Remove Git folders
 * Prompts
 * Database tables
+
+## CLI
+
+### Deploy
+
+```
+arness deploy
+```
+
+This will read `arness.yaml` and deploy 
+
+### Run locally in a CLI
+
+```
+arness cli
+```
+
+
+## Configuration
+
+arness.yaml:
+
+```yaml
+account-id: ${CF_ACCOUNT_ID}
+name: arness
+
+admins:
+  - slack:<slack-user-id>
+
+web-server:
+  access-app-id: <cloudflare-access-app-id>  # optional
+
+ai-gateway:
+  model: <llm-model>
+  account-id: <ai-gateway-account-id>  # optional, defaults to account-id above
+  gateway-id: ${CF_AIG_GATEWAY_ID}
+
+artifacts:
+  namespace: arness
+
+d1:
+  database-name: arness
+  database-id: ${CF_D1_DATABASE_ID}
+
+github:
+  oauth-client-id: ${GITHUB_OAUTH_CLIENT_ID}
+  oauth-client-secret: ${GITHUB_OAUTH_CLIENT_SECRET}
+  callback-path: /oauth/github/callback
+
+slack:
+  bot-token: ${SLACK_BOT_TOKEN}
+  signing-secret: ${SLACK_SIGNING_SECRET}
+  app-token: ${SLACK_APP_TOKEN}  # optional; only needed for Socket Mode/local development
+
+discord:
+  application-id: ${DISCORD_APPLICATION_ID}
+  public-key: ${DISCORD_PUBLIC_KEY}
+  bot-token: ${DISCORD_BOT_TOKEN}
+  enabled: false
+
+google-chat:
+  project-id: ${GOOGLE_CHAT_PROJECT_ID}
+  credentials-json: ${GOOGLE_APPLICATION_CREDENTIALS_JSON}
+  enabled: false
+```
+
+Env vars can be read from the environment at `arness deploy`-time, or from `.env`.
+
+GitHub OAuth uses `oauth-client-id` and `oauth-client-secret` because GitHub OAuth Apps expose those values as Client ID and Client secret. The callback path is configured separately so deployments can derive the full callback URL from the web server origin.
