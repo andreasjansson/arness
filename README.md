@@ -367,14 +367,14 @@ admins:
   - slack:<slack-user-id>
 
 account-id: ${CF_ACCOUNT_ID}
-name: arness  # optional; defaults to arness and is used for the Worker name
+agent_name: arness  # optional; defaults to arness and is used for the Worker name
 
 worker:
-  name: arness  # optional; defaults to name above
+  name: arness  # optional; defaults to agent_name above
 
 durable-objects:
-  agent-name: arness  # optional; defaults to name above
-  scheduler-name: arness-scheduler  # optional; defaults to <name>-scheduler
+  agent-name: arness  # optional; defaults to agent_name above
+  scheduler-name: arness-scheduler  # optional; defaults to <agent_name>-scheduler
 
 access:
   team-domain: ${CF_ACCESS_TEAM_DOMAIN}
